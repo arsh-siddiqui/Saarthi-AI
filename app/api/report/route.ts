@@ -1,9 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 import { askGroq } from "@/lib/groq";
+import { z } from "zod";
+
+const reportSchema = z.object({
+  message: z.string().optional(),
+  image: z.string().optional(),
+  language: z.string().optional(),
+}).refine(data => data.message || data.image, {
+  message: "Either message or image is required",
+  path: ["message"],
+});
 
 export async function POST(req: NextRequest) {
+  let body: any;
+
   try {
-    const { message, image, language } = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Request body must be valid JSON." },
+      { status: 400 }
+    );
+  }
+
+  const parsed = reportSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.issues[0].message },
+      { status: 400 }
+    );
+  }
+
+  const { message, image, language } = parsed.data;
+
+  try {
 
     const systemPrompt = `You are a professional civic issue analyzer. Analyze the provided complaint text and/or image.
 You must output a JSON object containing exactly the following keys. All values in this JSON object MUST be translated and written in the language: ${language || "English"}.

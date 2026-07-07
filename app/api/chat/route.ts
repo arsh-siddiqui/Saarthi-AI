@@ -2,8 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { askGroq } from "@/lib/groq";
 import { ChatRequestBody, ChatResponseBody } from "@/types";
 
+import { z } from "zod";
+
+const chatRequestSchema = z.object({
+  message: z.string().min(1, "The 'message' field is required.").max(2000),
+  context: z.string().optional(),
+  language: z.enum(["en", "hi"]).optional(),
+});
+
 export async function POST(req: NextRequest) {
-  let body: ChatRequestBody;
+  let body: any;
 
   try {
     body = await req.json();
@@ -14,13 +22,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const message = body.message?.trim();
-  if (!message) {
+  const parsed = chatRequestSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
-      { error: "The 'message' field is required." },
+      { error: parsed.error.issues[0].message },
       { status: 400 }
     );
   }
+
+  const { message, context, language } = parsed.data;
 
   const schemaInstruction = `\n\nReturn your response strictly as a JSON object with the following schema:
 {

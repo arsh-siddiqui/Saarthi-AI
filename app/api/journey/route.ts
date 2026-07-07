@@ -1,13 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { askGroq } from "@/lib/groq";
+import { z } from "zod";
+
+const journeySchema = z.object({
+  goal: z.string().min(1, "Goal is required").max(500),
+});
 
 export async function POST(req: NextRequest) {
-  try {
-    const { goal } = await req.json();
+  let body: any;
 
-    if (!goal) {
-      return NextResponse.json({ error: "Goal is required" }, { status: 400 });
-    }
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Request body must be valid JSON." },
+      { status: 400 }
+    );
+  }
+
+  const parsed = journeySchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.issues[0].message },
+      { status: 400 }
+    );
+  }
+
+  const { goal } = parsed.data;
+
+  try {
 
     const prompt = `Generate a detailed, step-by-step citizen journey for the following government request: "${goal}".
 Return the response strictly as a JSON object with the following structure:

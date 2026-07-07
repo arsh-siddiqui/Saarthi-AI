@@ -1,10 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { askGroq } from "@/lib/groq";
+import { z } from "zod";
+
+const docsSchema = z.object({
+  documentType: z.string().min(1, "Document type is required").max(1000),
+  context: z.string().optional(),
+  language: z.string().optional(),
+});
 
 export async function POST(req: NextRequest) {
-  try {
-    const { documentType, language } = await req.json();
+  let body: any;
 
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Request body must be valid JSON." },
+      { status: 400 }
+    );
+  }
+
+  const parsed = docsSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.issues[0].message },
+      { status: 400 }
+    );
+  }
+
+  const { documentType, language } = parsed.data;
+
+  try {
     const systemPrompt = `You are an expert Indian government document consultant. Provide accurate and reliable guidelines for obtaining documents in India.
 You must output a JSON object containing exactly the following keys. All values in this JSON object MUST be translated and written in the language: ${language || "English"}.
 JSON keys required:

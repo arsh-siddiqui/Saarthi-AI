@@ -1,9 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import { askGroq } from "@/lib/groq";
+import { z } from "zod";
+
+const schemesSchema = z.object({
+  age: z.coerce.number().min(0).max(120),
+  state: z.string().min(1, "State is required"),
+  occupation: z.string().min(1, "Occupation is required"),
+  student: z.boolean().optional(),
+  income: z.coerce.number().min(0),
+  gender: z.string().optional(),
+  language: z.string().optional(),
+});
 
 export async function POST(req: NextRequest) {
+  let body: any;
+
   try {
-    const { age, state, occupation, student, income, gender, language } = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Request body must be valid JSON." },
+      { status: 400 }
+    );
+  }
+
+  const parsed = schemesSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.issues[0].message },
+      { status: 400 }
+    );
+  }
+
+  const { age, state, occupation, student, income, gender, language } = parsed.data;
+
+  try {
 
     const systemPrompt = `You are a social welfare scheme recommender for the Government of India.
 Recommend 3 relevant government schemes (central or state-specific) matching the user's profile.
