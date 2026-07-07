@@ -78,13 +78,15 @@ export default function Navbar() {
           className="md:hidden rounded-lg p-2 hover:bg-background"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {open && (
-        <div className="mt-2 rounded-2xl border border-border bg-white p-4 shadow-elevated md:hidden">
+        <div id="mobile-menu" className="mt-2 rounded-2xl border border-border bg-white p-4 shadow-elevated md:hidden">
           <div className="flex flex-col gap-3">
             {NAV_LINKS.map((link) => (
               <a

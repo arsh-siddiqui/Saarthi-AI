@@ -341,7 +341,7 @@ export default function ReportPage() {
                       <select
                         id="comp-priority"
                         value={formData.priority}
-                        onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
+                        onChange={(e) => setFormData({ ...formData, priority: e.target.value as "Low" | "Medium" | "High" })}
                         className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold text-ink focus:border-primary focus:outline-none"
                       >
                         <option value="Low">Low</option>

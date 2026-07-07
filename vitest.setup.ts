@@ -4,7 +4,7 @@ import React from 'react';
 
 // Mock Next.js router and next/link
 vi.mock('next/link', () => ({
-  default: ({ children, href }: any) => React.createElement('a', { href }, children),
+  default: ({ children, href }: { children: React.ReactNode; href: string }) => React.createElement('a', { href }, children),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -33,9 +33,12 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
 };
 
+// Mock Element.scrollTo
+Element.prototype.scrollTo = () => {};
+
 // Mock IntersectionObserver for Framer Motion
 global.IntersectionObserver = class IntersectionObserver {
-  root: any = null;
+  root: Element | null = null;
   rootMargin: string = '';
   thresholds: ReadonlyArray<number> = [];
   observe() {}

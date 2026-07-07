@@ -2,7 +2,18 @@ import React from 'react';
 import { MapPin, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function StructuredResponse({ data }: { data: any }) {
+interface StructuredData {
+  summary?: string;
+  documents?: string[];
+  steps?: string[];
+  fees?: string;
+  time?: string;
+  tips?: string[];
+  nearbyOffices?: string;
+  nextActions?: string[];
+}
+
+export default function StructuredResponse({ data }: { data: StructuredData }) {
   if (!data) return null;
 
   return (

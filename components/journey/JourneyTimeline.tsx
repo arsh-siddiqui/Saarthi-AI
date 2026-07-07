@@ -57,7 +57,7 @@ export default function JourneyTimeline({ data }: { data: JourneyData | null }) 
 
       <div className="relative border-l-2 border-indigo-100 dark:border-gray-800 ml-4 md:ml-8 space-y-8">
         {data.steps.map((step, index) => {
-          const IconComponent = (LucideIcons as any)[step.icon || 'CheckCircle'] || LucideIcons.CheckCircle;
+          const IconComponent = (LucideIcons as unknown as Record<string, React.ElementType>)[step.icon || 'CheckCircle'] || LucideIcons.CheckCircle;
           
           return (
             <motion.div 

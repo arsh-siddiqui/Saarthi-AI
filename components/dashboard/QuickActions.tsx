@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -18,7 +18,7 @@ import { useSettings } from "@/context/SettingsContext";
 import { getTranslation } from "@/lib/translations";
 
 interface QuickAction {
-  icon: any;
+  icon: React.ElementType;
   title: string;
   description: string;
   href?: string;
@@ -35,7 +35,7 @@ const EMERGENCY_CONTACTS = [
   { name: "Child Helpline", phone: "1098", desc: "Child protection services" },
 ];
 
-export default function QuickActions() {
+export default memo(function QuickActions() {
   const [showEmergency, setShowEmergency] = useState(false);
   const { language } = useSettings();
   const t = getTranslation(language).quickActions;
@@ -190,4 +190,4 @@ export default function QuickActions() {
       </AnimatePresence>
     </>
   );
-}
+});

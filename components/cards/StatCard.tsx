@@ -8,7 +8,9 @@ interface StatCardProps {
   delay?: number;
 }
 
-export default function StatCard({ value, label, delay = 0 }: StatCardProps) {
+import { memo } from "react";
+
+export default memo(function StatCard({ value, label, delay = 0 }: StatCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -23,4 +25,4 @@ export default function StatCard({ value, label, delay = 0 }: StatCardProps) {
       <span className="mt-1 text-sm text-muted">{label}</span>
     </motion.div>
   );
-}
+});

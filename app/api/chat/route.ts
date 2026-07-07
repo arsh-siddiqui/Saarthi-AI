@@ -11,7 +11,7 @@ const chatRequestSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  let body: any;
+  let body: unknown;
 
   try {
     body = await req.json();
@@ -46,8 +46,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const reply = await askGroq(message + schemaInstruction, {
-      context: body.context,
-      language: body.language,
+      context: context,
+      language: language,
       json: true,
     });
     // Parse the JSON to ensure it's valid, and return the structured object

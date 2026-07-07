@@ -43,7 +43,23 @@ export interface ChatRequestBody {
 }
 
 export interface ChatResponseBody {
-  reply: any;
+  reply: unknown;
+}
+
+export interface DocumentsRequestBody {
+  serviceName: string;
+  context?: string;
+  language?: string;
+}
+
+export interface DocumentsResponseBody {
+  error?: string;
+  requiredDocuments?: string[];
+  estimatedFees?: string;
+  processingTime?: string;
+  importantTips?: string[];
+  timeline?: Record<string, string>;
+  reply: unknown;
 }
 
 export const CATEGORY_META: Record<
