@@ -7,7 +7,7 @@ import { z } from "zod";
 const chatRequestSchema = z.object({
   message: z.string().min(1, "The 'message' field is required.").max(2000),
   context: z.string().optional(),
-  language: z.enum(["en", "hi"]).optional(),
+  language: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
