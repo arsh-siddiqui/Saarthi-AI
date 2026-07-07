@@ -61,7 +61,7 @@ export async function askGroq(
   }
 
   if (images && images.length > 0) {
-    const userContent: Record<string, unknown>[] = [{ type: "text", text: message }];
+    const userContent = [{ type: "text", text: message }] as any[];
     images.forEach((img) => {
       userContent.push({
         type: "image_url",
