@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+}
+
+* {
+  border-color: theme("colors.border");
+}
+
+html,
+body {
+  background: #f8fafc;
+  color: #111827;
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #2563eb;
+  color: white;
+}
+
+/* ---- Solid, non-glass card system ---- */
+.surface {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 20px rgba(17, 24, 39, 0.06);
+}
+
+.surface-elevated {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 32px rgba(17, 24, 39, 0.1);
+}
+
+.gradient-brand {
+  background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Leaflet overrides so the map matches the product, not the library default ---- */
+.leaflet-container {
+  font-family: var(--font-body);
+  background: #eef2f7 !important;
+  border-radius: 1.25rem;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px rgba(17, 24, 39, 0.14);
+  padding: 0;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  width: 260px !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: none;
+}
+
+.civic-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.25);
+  color: white;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Visible keyboard focus, everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Accessibility Support */
+html.large-text {
+  font-size: 1.15rem;
+}
+
+html.high-contrast {
+  filter: contrast(1.2);
+}
+
+html.high-contrast body {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.high-contrast .surface,
+html.high-contrast .surface-elevated {
+  background: #ffffff !important;
+  border: 2px solid #000000 !important;
+  box-shadow: none !important;
+  color: #000000 !important;
+}
+
+html.high-contrast input,
+html.high-contrast textarea,
+html.high-contrast select {
+  border: 2px solid #000000 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.high-contrast button {
+  border: 2px solid #000000 !important;
+}
+
+html.high-contrast .text-muted {
+  color: #1f2937 !important;
+}
+
+html.high-contrast .text-primary {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+html.high-contrast .gradient-brand {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
